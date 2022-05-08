@@ -164,3 +164,5 @@ cython_debug/
 # macOS
 # Unable to retrieve data, please visit
 # https://raw.githubusercontent.com/github/gitignore/master/macOS.gitignore
+.DS_Store
+.DS_Store
