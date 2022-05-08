@@ -9,7 +9,7 @@ class RGB(Color):
     def hex_format(self):
         # Returns color in hex format
         return '#{:02X}{:02X}{:02X}'.format(self.red,self.green,self.blue)
-    def color(self):
+    def color(self) -> tuple:
         return (self.red, self.green, self.blue)
 #Color Contants
 ALICEBLUE = RGB(240, 248, 255)
