@@ -1,8 +1,9 @@
 import random
 import pygame
 from Direction import Direction, Point
-from constants import BLOCK_SIZE, FONT, SPEED
+from constants import BLOCK_SIZE, SPEED
 from color_constants import GREEN3, RED1, BLACK, GREEN1, GREEN2, WHITE
+
 
 class SnakeGame:
     
@@ -10,6 +11,7 @@ class SnakeGame:
         self.width = width
         self.height = height
         self.is_hidden = False
+        self.FONT = pygame.font.Font('OleoScriptSwashCaps-Regular.ttf', 25)
         # init display
         self.display = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption('Snake')
@@ -83,7 +85,7 @@ class SnakeGame:
         
         # update ui and clock
         self._update_ui()
-        self.clock.tick(SPEED + len(self.snake) - 2)
+        self.clock.tick(SPEED + (len(self.snake) / SPEED))
 
 
     
@@ -111,7 +113,7 @@ class SnakeGame:
         return False
     
     def show_game_over(self):
-        text_surface = FONT.render("Press space bar to play again", True, WHITE)
+        text_surface = self.FONT.render("Press space bar to play again", True, WHITE)
         self.display.blit(text_surface, (self.width / 2, self.height * 7 / 8))
         pygame.display.flip()
         done = False
@@ -140,7 +142,7 @@ class SnakeGame:
             
         pygame.draw.rect(self.display, RED1, pygame.Rect(self.food.x, self.food.y, BLOCK_SIZE, BLOCK_SIZE))
         
-        text = FONT.render("Score: " + str(self.score), True, WHITE)
+        text = self.FONT.render("Score: " + str(self.score), True, WHITE)
         self.display.blit(text, [0, 0])
         pygame.display.flip()
         
