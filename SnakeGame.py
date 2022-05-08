@@ -9,6 +9,7 @@ class SnakeGame:
     def __init__(self, width=640, height=480):
         self.width = width
         self.height = height
+        self.is_hidden = False
         # init display
         self.display = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption('Snake')
@@ -52,7 +53,7 @@ class SnakeGame:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and not self.is_hidden:
                 if event.key == pygame.K_LEFT and self.direction != Direction.RIGHT:
                     self.direction = Direction.LEFT
                 elif event.key == pygame.K_RIGHT and self.direction != Direction.LEFT:
@@ -82,14 +83,27 @@ class SnakeGame:
         
         # update ui and clock
         self._update_ui()
-        self.clock.tick(SPEED)
+        self.clock.tick(SPEED + len(self.snake) - 2)
 
 
     
     def _is_collision(self):
         # hits boundary
-        if self.head.x > self.width - BLOCK_SIZE or self.head.x < 0 or self.head.y > self.height - BLOCK_SIZE or self.head.y < 0:
-            return True
+        self.is_hidden = True
+        if self.head.x > self.width - BLOCK_SIZE:
+            self.head = Point(-BLOCK_SIZE, self.head.y)
+        elif self.head.x < 0:
+            self.direction = Direction.LEFT
+            self.head = Point(self.width, self.head.y)
+        elif self.head.y > self.height - BLOCK_SIZE:
+            self.head = Point(self.head.x, -BLOCK_SIZE)
+        elif self.head.y < 0:
+            self.head = Point(self.head.x, self.height)
+        else:
+            self.is_hidden = False
+
+            # return True
+        
         # hits itself
         if self.head in self.snake[1:]:
             return True
